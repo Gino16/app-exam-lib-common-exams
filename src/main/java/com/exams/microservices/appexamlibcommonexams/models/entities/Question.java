@@ -9,9 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "questions")
 @Getter
@@ -22,6 +24,7 @@ public class Question {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotEmpty
   private String text;
 
   @JsonIgnoreProperties(value = {"questions"})
@@ -31,8 +34,12 @@ public class Question {
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof Question question)) return false;
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof Question question)) {
+      return false;
+    }
 
     return this.id != null && this.id.equals(question.getId());
   }

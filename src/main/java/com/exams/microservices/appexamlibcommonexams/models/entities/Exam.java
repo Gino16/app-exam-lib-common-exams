@@ -17,9 +17,12 @@ import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @Getter
 @Setter
 @Entity
@@ -30,16 +33,19 @@ public class Exam {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotEmpty
   private String name;
 
   @Column(name = "create_at")
   @Temporal(TemporalType.TIMESTAMP)
   private Date createAt;
 
+  @NotNull
   @JsonIgnoreProperties(value = {"exam"}, allowSetters = true)
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "exam")
   private List<Question> questions;
 
+  @NotNull
   @ManyToOne(fetch = FetchType.LAZY)
   private Subject subject;
 

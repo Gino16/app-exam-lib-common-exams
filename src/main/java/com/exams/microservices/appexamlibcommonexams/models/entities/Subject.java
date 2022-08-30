@@ -12,9 +12,11 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import lombok.Getter;
 import lombok.Setter;
 
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer", "handler"})
 @Entity
 @Table(name = "subjects")
 @Getter
@@ -25,13 +27,14 @@ public class Subject {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
+  @NotEmpty
   private String name;
 
-  @JsonIgnoreProperties(value = {"subject"})
+  @JsonIgnoreProperties(value = {"children", "father"})
   @ManyToOne(fetch = FetchType.LAZY)
   private Subject father;
 
-  @JsonIgnoreProperties(value = {"subject"}, allowSetters = true)
+  @JsonIgnoreProperties(value = {"father"}, allowSetters = true)
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "father", cascade = CascadeType.ALL)
   private List<Subject> children;
 
