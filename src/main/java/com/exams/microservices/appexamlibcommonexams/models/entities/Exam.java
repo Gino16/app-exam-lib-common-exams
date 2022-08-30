@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -39,6 +40,9 @@ public class Exam {
   @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "exam")
   private List<Question> questions;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  private Subject subject;
+
   public Exam() {
     this.questions = new ArrayList<>();
   }
@@ -65,8 +69,12 @@ public class Exam {
 
   @Override
   public boolean equals(Object o) {
-    if (o == this) return true;
-    if (!(o instanceof Exam exam)) return false;
+    if (o == this) {
+      return true;
+    }
+    if (!(o instanceof Exam exam)) {
+      return false;
+    }
     return this.id != null && this.id.equals(exam.getId());
   }
 }
